@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import Link from 'next/link'
-import { Search, ChevronDown, Globe, Moon, Sun } from 'lucide-react'
+import { Search, ChevronDown, Globe, Moon  } from 'lucide-react'
 
 const prisma = new PrismaClient()
 
@@ -86,7 +86,7 @@ export default async function AnnouncementPage() {
           <ul className="space-y-4">
             {announcements.map((announcement) => (
               <li key={announcement.id} className="border-b border-border pb-4">
-                <Link href={`/announcement/${announcement.id}`} className="block p-2 rounded hover:bg-accent">
+                <Link href='#' className="block p-2 rounded hover:bg-accent">
                   <h3 className="text-base font-medium mb-1 css-1yxx6id">
                     {announcement.title}
                     <span className="text-sm text-muted-foreground ml-2">
