@@ -1,0 +1,17 @@
+datasource db {
+  provider = "sqlite" // Puedes cambiarlo a "postgresql" u otro proveedor si deseas
+  url      = "file:./dev.db" // Esto crea una base de datos SQLite local
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Announcement {
+  id          Int      @id @default(autoincrement())
+  title       String
+  date        DateTime
+  content     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

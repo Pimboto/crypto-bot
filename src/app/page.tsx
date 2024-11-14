@@ -1,101 +1,104 @@
-import Image from "next/image";
+import { PrismaClient } from '@prisma/client'
+import Link from 'next/link'
+import { Search, ChevronDown, Globe, Moon, Sun } from 'lucide-react'
 
-export default function Home() {
+const prisma = new PrismaClient()
+
+async function getAnnouncements() {
+  const announcements = await prisma.announcement.findMany({
+    orderBy: {
+      date: 'desc',
+    },
+  })
+  return announcements
+}
+
+export default async function AnnouncementPage() {
+  const announcements = await getAnnouncements()
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
+      <header className="flex justify-between items-center p-4 border-b border-border">
+        <div className="flex items-center space-x-6">
+          <img src="/logo.png" alt="Binance Logo" className="h-8" />
+          <nav className="hidden md:flex space-x-6">
+            <Link href="#" className="text-foreground hover:text-primary">Buy Crypto</Link>
+            <Link href="#" className="text-foreground hover:text-primary">Markets</Link>
+            <Link href="#" className="text-foreground hover:text-primary">Trade</Link>
+            <Link href="#" className="text-foreground hover:text-primary">Futures</Link>
+            <Link href="#" className="text-foreground hover:text-primary">Earn</Link>
+            <div className="relative group">
+              <button className="flex items-center text-foreground hover:text-primary">
+                Square <ChevronDown className="ml-1" />
+              </button>
+              <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg hidden group-hover:block bg-background">
+                <div className="rounded-md ring-1 ring-black ring-opacity-5 py-1">
+                  <Link href="#" className="block px-4 py-2 text-foreground hover:bg-accent">Square</Link>
+                  <Link href="#" className="block px-4 py-2 text-foreground hover:bg-accent">Academy (Learn & Earn)</Link>
+                  <Link href="#" className="block px-4 py-2 text-foreground hover:bg-accent">Blog</Link>
+                  <Link href="#" className="block px-4 py-2 text-foreground hover:bg-accent">Research</Link>
+                </div>
+              </div>
+            </div>
+            <Link href="#" className="text-foreground hover:text-primary">More</Link>
+          </nav>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="flex items-center space-x-4">
+          <button className="text-foreground hover:text-primary">Log In</button>
+          <button className="bg-primary text-primary-foreground px-4 py-1 rounded">Sign Up</button>
+          <button className="text-foreground hover:text-primary"><Globe /></button>
+          <button className="text-foreground hover:text-primary">
+            <Moon />
+          </button>
+        </div>
+      </header>
+      <div className="flex flex-1">
+        <aside className="w-16 border-r border-border hidden md:block">
+          <nav className="flex flex-col items-center py-4 space-y-6">
+            {['⌂', '?', '📢', '📊', '💼', '📜', '📚'].map((icon, index) => (
+              <Link key={index} href="#" className="w-8 h-8 flex items-center justify-center rounded text-foreground hover:bg-accent">
+                {icon}
+              </Link>
+            ))}
+          </nav>
+        </aside>
+        <main className="flex-1 p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold">Announcement</h1>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search announcements"
+                className="pl-10 pr-4 py-2 rounded-md w-80 bg-input text-foreground"
+              />
+              <Search className="absolute left-3 top-2.5 text-muted-foreground" />
+              <button className="absolute right-2 top-1 px-3 py-1 rounded bg-primary text-primary-foreground">
+                Search
+              </button>
+            </div>
+          </div>
+          <div className="text-sm mb-4 text-muted-foreground">
+            <Link href="#" className="hover:text-foreground">Home</Link> {'>'}
+            <Link href="#" className="hover:text-foreground"> Support Center</Link> {'>'}
+            <Link href="#" className="hover:text-foreground"> Announcement</Link> {'>'} New Cryptocurrency Listing
+          </div>
+          <h2 className="text-xl font-semibold mb-4">New Cryptocurrency Listing</h2>
+          <ul className="space-y-4">
+            {announcements.map((announcement) => (
+              <li key={announcement.id} className="border-b border-border pb-4">
+                <Link href={`/announcement/${announcement.id}`} className="block p-2 rounded hover:bg-accent">
+                  <h3 className="text-base font-medium mb-1 css-1yxx6id">
+                    {announcement.title}
+                    <span className="text-sm text-muted-foreground ml-2">
+                      {announcement.date.toLocaleDateString()}
+                    </span>
+                  </h3>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </main>
+      </div>
     </div>
-  );
+  )
 }
